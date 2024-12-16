@@ -2,10 +2,12 @@ import React from "react";
 import { HiOutlineTrash, HiPencil, HiPlus, HiSearch } from "react-icons/hi";
 import { HiComputerDesktop } from "react-icons/hi2";
 import { Link } from "react-router-dom";
+import Container from "./Container";
 
 const VoucherList = () => {
   return (
     <section>
+      
       <div className="flex justify-between mb-3 px-5">
         <div className="">
           <div className="relative mb-6">
@@ -92,6 +94,7 @@ const VoucherList = () => {
           </tbody>
         </table>
       </div>
+      
     </section>
   );
 };

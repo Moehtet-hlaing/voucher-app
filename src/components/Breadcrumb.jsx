@@ -2,7 +2,7 @@ import React from "react";
 import { HiChevronRight, HiHome } from "react-icons/hi";
 import { Link } from "react-router-dom";
 
-const Breadcrumb = ({ currentPageTitle }) => {
+const Breadcrumb = ({ currentPageTitle , links}) => {
   return (
     <div className="flex w-full gap-3 mb-5">
       <nav className="flex" aria-label="Breadcrumb">
@@ -16,6 +16,17 @@ const Breadcrumb = ({ currentPageTitle }) => {
               Home
             </Link>
           </li>
+          { links && links.map((link, index) => (
+            <li key={index} className="inline-flex items-center">
+            <Link
+              to={link.path}
+              className="inline-flex items-center gap-1 text-sm font-medium text-gray-700 hover:text-blue-600 dark:text-gray-400 dark:hover:text-white"
+            >
+              <HiChevronRight/>
+              {link.title}
+            </Link>
+          </li>
+          ))}
           <li aria-current="page">
             <div className="flex items-center">
             <HiChevronRight />
