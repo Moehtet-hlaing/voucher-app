@@ -1,33 +1,36 @@
 import React, { useState } from "react";
-import { set, useForm } from "react-hook-form";
-import { Link, useNavigate } from "react-router-dom";
+import { useForm } from "react-hook-form";
+import { Link, useNavigate, useParams } from "react-router-dom";
 import useSWR, { useSWRConfig } from "swr";
 import { tailspin } from "ldrs";
 import toast from "react-hot-toast";
 
 tailspin.register();
 
-// const fetcher = (url) => fetch(url).then((res) => res.json());
+const fetcher = (url) => fetch(url).then((res) => res.json());
 
-const CreateProductCard = () => {
+const EditProductCard = () => {
   const {
     register,
     handleSubmit,
     formState: { errors },
     reset
   } = useForm();
-  // const { data, error, isLoading } = useSWR(
-  //   import.meta.env.VITE_API_URL + "/products",
-  //   fetcher
-  // );
+  const {id} = useParams();
+  console.log(id);
+  const { data, error, isLoading } = useSWR(
+    import.meta.env.VITE_API_URL + `/products/${id}`,
+    fetcher
+  );
+  // console.log(import.meta.env.VITE_API_URL + `products/${id}`);
+ 
   const { mutate } = useSWRConfig();
   const [isSending, setIsSending] = useState(false);
   const navigate = useNavigate();
   const handleCreateProduct = async (data) => {
-    data.created_at = new Date().toISOString();
     setIsSending(true);
-    const res = await fetch(import.meta.env.VITE_API_URL + "/products", {
-      method: "POST",
+    const res = await fetch(import.meta.env.VITE_API_URL + "/products/" + id, {
+      method: "PUT",
       headers: {
         "Content-Type": "application/json",
       },
@@ -38,20 +41,19 @@ const CreateProductCard = () => {
     });
     setIsSending(false);
     // mutate(import.meta.env.VITE_API_URL + "/products");
-    reset();
     if(data.back_to_product_list){
       navigate("/product");}
     const result = await res.json();
-    toast.success(`${result.product_name} created successfully`);
+    toast.success("product updated successfully");
   };
   return (
     <div>
-      <h1 className="font-bold text-2xl mb-3">Create New Product</h1>
+      <h1 className="font-bold text-2xl mb-3">Edit Product</h1>
       <p className="mb-3 text-slate-600">
         Lorem ipsum dolor sit amet consectetur adipisicing elit. Aut, eligendi.
         Consequuntur velit deleniti similique repellendus mollitia!
       </p>
-      <form onSubmit={handleSubmit(handleCreateProduct)} action="">
+      {isLoading ? <p>loading...</p> : <form onSubmit={handleSubmit(handleCreateProduct)} action="">
         <div className="mb-3">
           <label
             htmlFor="first_name"
@@ -59,9 +61,10 @@ const CreateProductCard = () => {
               errors.product_name ? "text-red-500" : ""
             }`}
           >
-            New Product Name
+            Product Name
           </label>
           <input
+          defaultValue={data.product_name}
             type="text"
             {...register("product_name", {
               required: true,
@@ -104,6 +107,7 @@ const CreateProductCard = () => {
           </label>
           <input
             type="number"
+            defaultValue={data.price}
             {...register("price", { required: true })}
             className={`bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg
              focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 ${
@@ -127,7 +131,6 @@ const CreateProductCard = () => {
             id="all-correct"
             type="checkbox"
             {...register("all_correct")}
-            defaultValue
             className="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600"
           />
           <label
@@ -142,10 +145,11 @@ const CreateProductCard = () => {
             id="back-to-product-list"
             type="checkbox"
             {...register("back_to_product_list")}
-            defaultValue
+          
             className="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600"
           />
           <label
+          checked
             htmlFor="back-to-product-list"
             className="ms-2 text-sm font-medium text-gray-400 dark:text-gray-500"
           >
@@ -158,7 +162,7 @@ const CreateProductCard = () => {
           className="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 me-2 mb-2 dark:bg-blue-600 dark:hover:bg-blue-700 focus:outline-none dark:focus:ring-blue-800"
         >
          <div className="flex justify-between items-center">
-         Save Product
+         Update Product
           {isSending && ( // Default values shown
             <l-tailspin
               size="20"
@@ -176,9 +180,11 @@ const CreateProductCard = () => {
         >
           Cancel
         </Link>
-      </form>
+      </form>}
     </div>
   );
 };
 
-export default CreateProductCard;
+export default EditProductCard;
+
+

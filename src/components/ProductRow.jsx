@@ -3,6 +3,7 @@ import { HiOutlineTrash, HiPencil } from "react-icons/hi";
 import { useSWRConfig } from "swr";
 import { zoomies } from "ldrs";
 import toast from "react-hot-toast";
+import { Link } from "react-router-dom";
 
 zoomies.register();
 
@@ -48,13 +49,14 @@ const ProductRow = ({ product: { id, product_name, price, created_at } }) => {
       </td>
       <td className="px-4 py-2 text-end">
         <div className="inline-flex rounded-md shadow-sm" role="group">
-          <button
+          <Link
+          to = {`/product/edit/${id}`}
             type="button"
             className="flex justify-center items-center size-10 text-sm font-medium text-slate-600 bg-transparent border border-slate-600 rounded-s-lg
             "
           >
             <HiPencil />
-          </button>
+          </Link>
           <button
             onClick={handleDeleteBtn}
             type="button"
