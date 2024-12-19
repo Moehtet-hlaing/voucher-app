@@ -3,8 +3,15 @@ import { HiOutlineTrash, HiPencil, HiPlus, HiSearch } from "react-icons/hi";
 import { HiComputerDesktop } from "react-icons/hi2";
 import { Link } from "react-router-dom";
 import Container from "./Container";
+import useSWR from "swr";
+import { set } from "react-hook-form";
+import VoucherListRow from "./VoucherListRow";
+
+const fetcher = (url) => fetch(url).then((res) => res.json());
 
 const VoucherList = () => {
+  const {data, error , isLoading} = useSWR(
+    import.meta.env.VITE_API_URL + "/vouchers",fetcher);
   return (
     <section>
       
@@ -61,36 +68,14 @@ const VoucherList = () => {
                 There is no voucher.
               </td>
             </tr>
-            <tr className="odd:bg-white odd:dark:bg-gray-900 even:bg-gray-50 even:dark:bg-gray-800 border-b dark:border-gray-700">
-              <td className="px-6 py-4">1</td>
-              <th
-                scope="row"
-                className="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white"
-              >
-                Kyaw Kyaw
-              </th>
-              <td className="px-6 py-4 text-end">kyaw@gmail.com</td>
-              <td className="px-6 py-4 text-end">
-                <p className="text-xs">7 Sep 2021</p>
-                <p className="text-xs">10:43 AM</p>
+            {isLoading ? <tr className="hidden last:table-row odd:bg-white odd:dark:bg-gray-900 even:bg-gray-50 even:dark:bg-gray-800 border-b dark:border-gray-700">
+              <td colSpan={5} className="px-6 py-4  text-center">
+                Loading...
               </td>
-              <td className="px-4 py-2 text-end">
-                <div className="inline-flex rounded-md shadow-sm" role="group">
-                  <button
-                    type="button"
-                    className="px-3 py-2 text-sm font-medium text-slate-600 bg-transparent border border-slate-600 rounded-s-lg hover:bg-slate-600 hover:text-white focus:z-10 focus:ring-2 focus:ring-gray-500 focus:bg-slate-600 focus:text-white dark:border-white dark:text-white dark:hover:text-white dark:hover:bg-gray-700 dark:focus:bg-gray-700"
-                  >
-                    <HiPencil />
-                  </button>
-                  <button
-                    type="button"
-                    className="px-4 py-2 text-sm font-medium text-slate-600 bg-transparent border border-slate-600 rounded-e-lg hover:bg-slate-600 hover:text-white focus:z-10 focus:ring-2 focus:ring-gray-500 focus:bg-slate-600 focus:text-white dark:border-white dark:text-white dark:hover:text-white dark:hover:bg-gray-700 dark:focus:bg-gray-700"
-                  >
-                    <HiOutlineTrash />
-                  </button>
-                </div>
-              </td>
-            </tr>
+            </tr> : (data.map((voucher, index) => 
+            <VoucherListRow key={index} voucher={voucher} />
+          ))
+           }
           </tbody>
         </table>
       </div>

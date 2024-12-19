@@ -1,26 +1,17 @@
 import React, { useState } from "react";
 import { HiOutlineTrash, HiPencil } from "react-icons/hi";
 import { useSWRConfig } from "swr";
-import { zoomies } from "ldrs";
 import toast from "react-hot-toast";
 import { Link } from "react-router-dom";
+import ShowDate from "./ShowDate";
+import { zoomies } from "ldrs";
 
 zoomies.register();
 
 // Default values shown
 
 const ProductRow = ({ product: { id, product_name, price, created_at } }) => {
-  const date = new Date(created_at);
-  const currentDate = date.toLocaleDateString("en-GB", {
-    day: "numeric",
-    month: "short",
-    year: "numeric",
-  });
-  const currentTime = date.toLocaleTimeString("en-GB", {
-    hour: "numeric",
-    minute: "numeric",
-    hour12: true,
-  });
+  
   const { mutate } = useSWRConfig();
   const [deleting, setDeleting] = useState(false);
 
@@ -44,8 +35,7 @@ const ProductRow = ({ product: { id, product_name, price, created_at } }) => {
       </th>
       <td className="px-6 py-4 text-end">{price}</td>
       <td className="px-6 py-4 text-end">
-        <p className="text-xs">{currentDate}</p>
-        <p className="text-xs">{currentTime}</p>
+       <ShowDate timestamp = {created_at}/> 
       </td>
       <td className="px-4 py-2 text-end">
         <div className="inline-flex rounded-md shadow-sm" role="group">
