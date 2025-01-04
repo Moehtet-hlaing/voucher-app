@@ -10,22 +10,25 @@ zoomies.register();
 
 // Default values shown
 
-const ProductRow = ({ product: { id, product_name, price, created_at } }) => {
+const ProductRow = ({ product: { id, product_name, price, created_at, updated_at } }) => {
   
   const { mutate } = useSWRConfig();
   const [deleting, setDeleting] = useState(false);
 
   const handleDeleteBtn = async () => {
     setDeleting(true);
-    await fetch(import.meta.env.VITE_API_URL + `/products/${id}`, {
+    const res = await fetch(import.meta.env.VITE_API_URL + `/products/${id}`, {
       method: "DELETE",
     });
-    mutate(import.meta.env.VITE_API_URL + "/products");
+    const result = await res.json();
     setDeleting(false);
-   toast.success("Product deleted successfully");
+    if(res.status === 200){ mutate(import.meta.env.VITE_API_URL + "/products");
+      toast.success("Product deleted successfully");}else{toast.error(result.message)}
+   
   };
   return (
-    <tr className="odd:bg-white odd:dark:bg-gray-900 even:bg-gray-50 even:dark:bg-gray-800 border-b dark:border-gray-700">
+    <tr className="odd:bg-white odd:dark:bg-gray-900 even:bg-gray-50 even:dark:bg-gray-800
+     border-b dark:border-gray-700">
       <td className="px-6 py-4">{id}</td>
       <th
         scope="row"
@@ -36,6 +39,9 @@ const ProductRow = ({ product: { id, product_name, price, created_at } }) => {
       <td className="px-6 py-4 text-end">{price}</td>
       <td className="px-6 py-4 text-end">
        <ShowDate timestamp = {created_at}/> 
+      </td>
+      <td className="px-6 py-4 text-end">
+       <ShowDate timestamp = {updated_at}/> 
       </td>
       <td className="px-4 py-2 text-end">
         <div className="inline-flex rounded-md shadow-sm" role="group">

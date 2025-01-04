@@ -27,7 +27,7 @@ const EditProductCard = () => {
   const { mutate } = useSWRConfig();
   const [isSending, setIsSending] = useState(false);
   const navigate = useNavigate();
-  const handleCreateProduct = async (data) => {
+  const handleUpdateProduct = async (data) => {
     setIsSending(true);
     const res = await fetch(import.meta.env.VITE_API_URL + `/products/${id}`, {
       method: "PUT",
@@ -46,6 +46,10 @@ const EditProductCard = () => {
     const result = await res.json();
     toast.success("product updated successfully");
   };
+
+if(isLoading) return <p>loading...</p>;
+console.log(data);
+
   return (
     <div>
       <h1 className="font-bold text-2xl mb-3">Edit Product</h1>
@@ -53,7 +57,7 @@ const EditProductCard = () => {
         Lorem ipsum dolor sit amet consectetur adipisicing elit. Aut, eligendi.
         Consequuntur velit deleniti similique repellendus mollitia!
       </p>
-      {isLoading ? <p>loading...</p> : <form onSubmit={handleSubmit(handleCreateProduct)} action="">
+      {isLoading ? <p>loading...</p> : <form onSubmit={handleSubmit(handleUpdateProduct)} action="">
         <div className="mb-3">
           <label
             htmlFor="first_name"
@@ -64,7 +68,7 @@ const EditProductCard = () => {
             Product Name
           </label>
           <input
-          defaultValue={data.product_name}
+          defaultValue={data?.data?.product_name}
             type="text"
             {...register("product_name", {
               required: true,
@@ -107,7 +111,7 @@ const EditProductCard = () => {
           </label>
           <input
             type="number"
-            defaultValue={data.price}
+            defaultValue={data?.data?.price}
             {...register("price", { required: true })}
             className={`bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg
              focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 ${

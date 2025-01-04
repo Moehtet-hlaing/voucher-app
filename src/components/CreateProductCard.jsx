@@ -4,6 +4,7 @@ import { Link, useNavigate } from "react-router-dom";
 import useSWR, { useSWRConfig } from "swr";
 import { tailspin } from "ldrs";
 import toast from "react-hot-toast";
+import reactUseCookie from "react-use-cookie";
 
 tailspin.register();
 
@@ -16,6 +17,7 @@ const CreateProductCard = () => {
     formState: { errors },
     reset
   } = useForm();
+  const[token] = reactUseCookie("my_token");
   // const { data, error, isLoading } = useSWR(
   //   import.meta.env.VITE_API_URL + "/products",
   //   fetcher
@@ -30,6 +32,8 @@ const CreateProductCard = () => {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
+        "Accept": "application/json",
+        "Authorization": `Bearer ${token}`,
       },
       body: JSON.stringify({
         product_name: data.product_name,
@@ -39,10 +43,11 @@ const CreateProductCard = () => {
     setIsSending(false);
     // mutate(import.meta.env.VITE_API_URL + "/products");
     reset();
-    if(data.back_to_product_list){
-      navigate("/product");}
     const result = await res.json();
-    toast.success(`${result.product_name} created successfully`);
+    if(data.back_to_product_list){
+      navigate("/dashboard/product");}
+    console.log(result);
+    toast.success(`${result.data.product_name} created successfully`);
   };
   return (
     <div>

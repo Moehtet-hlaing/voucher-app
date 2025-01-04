@@ -2,7 +2,7 @@ import React from 'react'
 import useRecordStore from '../stores/useRecordStore';
 import toast from 'react-hot-toast';
 
-const VoucherTableRow = ({record:{id,product:{product_name,price},quantity,cost},index}) => {
+const VoucherTableRow = ({record:{product_id,product:{product_name,price},quantity,cost},index}) => {
   const {removeRecord, changeQuantity} = useRecordStore();
   const handleDelete = () => {
    removeRecord(id);
@@ -10,10 +10,10 @@ const VoucherTableRow = ({record:{id,product:{product_name,price},quantity,cost}
    
   }
   const handleIncrease = () => {
-    changeQuantity(id,1);
+    changeQuantity(product_id,1);
    }
    const handleDecrease = () => {
-     changeQuantity(id,-1);
+     changeQuantity(product_id,-1);
    }
   return (
     <tr className="record-row border dark:border-gray-700 group">

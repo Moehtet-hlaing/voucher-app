@@ -5,9 +5,9 @@ import VoucherTableRow from './VoucherTableRow';
 
 const VoucherTable = () => {
   const {records}= useRecordStore();
-  const total = records.reduce((pv, cv) => pv + cv.cost, 0);
+  const total = records?.reduce((pv, cv) => pv + cv.cost, 0);
   const tax = total * 0.07;
-  const netTotal = total + tax;
+  const net_total = total + tax;
   return (
     <div className="relative overflow-x-auto shadow-md sm:rounded-lg my-5">
   <table className="w-full text-sm text-left rtl:text-right text-gray-500 dark:text-gray-400">
@@ -24,7 +24,7 @@ const VoucherTable = () => {
       </tr>
     </thead>
     <tbody id="recordGroup">
-      {records.length ? records.map((record, index) => <VoucherTableRow key={record.id} record={record} index={index }/>) : <tr className="hidden last:table-row odd:bg-white odd:dark:bg-gray-900 even:bg-gray-50 even:dark:bg-gray-800 border-b dark:border-gray-700">
+      {records.length ? records.map((record, index) => <VoucherTableRow key={record.product.id} record={record} index={index }/>) : <tr className="hidden last:table-row odd:bg-white odd:dark:bg-gray-900 even:bg-gray-50 even:dark:bg-gray-800 border-b dark:border-gray-700">
         <th scope="row" colSpan={6} className="px-6 py-4 font-medium text-center text-gray-900 whitespace-nowrap dark:text-white">
           There is no record yet
         </th>
@@ -51,7 +51,7 @@ const VoucherTable = () => {
         <th scope="row" colSpan={4} className="px-6 py-4 font-medium text-end text-gray-900 whitespace-nowrap dark:text-white">
           Net Total
         </th>
-        <td className="px-6 py-4 text-end" >{netTotal.toFixed(2)}</td>
+        <td className="px-6 py-4 text-end" >{parseFloat(net_total).toFixed(2)}</td>
         <td className="px-6 py-4 text-end" >{""}</td>
 
       </tr>

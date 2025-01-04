@@ -1,9 +1,11 @@
 import React, { useState } from 'react'
-import { HiOutlineTrash, HiPencil, HiPlus, HiSearch } from "react-icons/hi";
+import { HiArrowRight, HiOutlineTrash, HiPencil, HiPlus, HiSearch } from "react-icons/hi";
 import ShowDate from './ShowDate';
 import { useSWRConfig } from 'swr';
 import toast from 'react-hot-toast';
 import { zoomies } from "ldrs";
+import { Link } from 'react-router-dom';
+import { HiArrowLeft } from 'react-icons/hi2';
 
 zoomies.register();
 
@@ -40,7 +42,7 @@ const VoucherListRow = ({voucher:{id,voucher_id,customer_name,customer_email,sal
                   <button
                     onClick={handleDeleteBtn}
                     type="button"
-                    className="px-4 py-2 text-sm font-medium text-slate-600 bg-transparent border border-slate-600 rounded-lg hover:bg-slate-600 hover:text-white focus:z-10 focus:ring-2 focus:ring-gray-500 focus:bg-slate-600 focus:text-white dark:border-white dark:text-white dark:hover:text-white dark:hover:bg-gray-700 dark:focus:bg-gray-700"
+                    className="px-4 py-2 text-sm font-medium text-slate-600 bg-transparent border border-slate-600 rounded-s-lg hover:bg-slate-600 hover:text-white focus:z-10 focus:ring-2 focus:ring-gray-500 focus:bg-slate-600 focus:text-white dark:border-white dark:text-white dark:hover:text-white dark:hover:bg-gray-700 dark:focus:bg-gray-700"
                   >
                     {deleting ? (
               <l-zoomies
@@ -54,6 +56,10 @@ const VoucherListRow = ({voucher:{id,voucher_id,customer_name,customer_email,sal
               <HiOutlineTrash />
             )}
                   </button>
+                <Link to={`/voucher/details/${id}`} className="px-4 py-2 text-sm font-medium text-slate-600 bg-transparent border border-slate-600 rounded-e-lg hover:bg-slate-600 hover:text-white focus:z-10 focus:ring-2 focus:ring-gray-500 focus:bg-slate-600 focus:text-white dark:border-white dark:text-white dark:hover:text-white dark:hover:bg-gray-700 dark:focus:bg-gray-700"
+                >
+                  <HiArrowRight />
+                </Link>
                 </div>
               </td>
             </tr>

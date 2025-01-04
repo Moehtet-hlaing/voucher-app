@@ -8,7 +8,7 @@ const EditProductPage = () => {
   return (
     <div>
         <Container>
-            <Breadcrumb currentPageTitle={"Edit Product"} links={[{title:"Product Module",path:"/product"}]} />
+            <Breadcrumb currentPageTitle={"Edit Product"} links={[{title:"Product Module",path:"/dashboard/product"}]} />
             <EditProductCard />
         </Container>
     </div>

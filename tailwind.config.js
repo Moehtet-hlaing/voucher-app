@@ -9,10 +9,10 @@ export default {
     fontFamily: {
       sans: ["Montserrat", "Padauk", "sans-serif"],
     },
-    extend: {},
+    extend: {display: ['print'], },
   },
   plugins: [
-    require('flowbite/plugin')
-]
+    require('flowbite/plugin'),
+],
 }
 
